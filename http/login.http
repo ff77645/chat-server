@@ -1,0 +1,28 @@
+### /login
+post http://127.0.0.1:3000/login
+Content-Type: application/json
+
+{
+    "username":"Tom2",
+    "password":"123456"
+}
+
+
+### /login/register
+post http://127.0.0.1:3000/login/register
+Content-Type: application/json
+
+{
+    "username":"Marry646",
+    "password":"123456"
+}
+
+### /login/change-psd
+post http://127.0.0.1:3000/login/change-psd
+Content-Type: application/json
+
+{
+    "username":"Tom2",
+    "password":"123456",
+    "newpassword":"654321"
+}

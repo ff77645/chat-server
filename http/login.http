@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "username":"Tom2",
-    "password":"123456"
+    "password":"654321"
 }
 
 
@@ -13,7 +13,7 @@ post http://127.0.0.1:3000/login/register
 Content-Type: application/json
 
 {
-    "username":"Marry646",
+    "username":"test",
     "password":"123456"
 }
 

@@ -1,0 +1,12 @@
+### 创建房间
+post http://127.0.0.1:3000/chat/create-room
+Content-Type: application/json
+
+{
+    "roomName":"天子八号"
+}
+
+
+### 加入房间
+get http://127.0.0.1:3000/chat/room?roomNum=14
+Content-Type: application/json

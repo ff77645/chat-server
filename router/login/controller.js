@@ -1,7 +1,8 @@
 import dayjs from 'dayjs'
 import pool from '../../mysql/index.js'
 import {sendMail} from '../../utils/nodemailer.js'
-
+import {sign} from '../../utils/jwt.js'
+import {JWT_SECRET,TOKEN_EXPIRE} from '../../config/index.js'
 
 // 登录
 export const login = async (req,res)=>{
@@ -20,7 +21,13 @@ export const login = async (req,res)=>{
         'UPDATE users SET last_login_date = ?,last_login_ip = ? WHERE id = ?',
         [date,ip,resp.id]
     )
-    res.status(200).json(resp)
+    const token = await sign({id:resp.id},JWT_SECRET,{
+        expiresIn:TOKEN_EXPIRE
+    })
+    res.status(200).json({
+        token,
+        user:resp
+    })
 }
 
 
@@ -58,6 +65,7 @@ export const register = async (req,res)=>{
         'SELECT * FROM users WHERE email = ? LIMIT 1',
         [email]
     )
+    console.log({resp,email,password});
     if(resp) return res.status(403).json({msg:'账户已存在'})
     const register_date = dayjs().format('YYYY-MM-DD HH:mm:ss')
     const register_ip = req.ip
@@ -65,8 +73,8 @@ export const register = async (req,res)=>{
     const username = ''
     // TODO 生成用户头像
     const avatar = ''
-    const [user] = await pool.query(
-        'INSERT INTO users(username,email,password,avatar,register_date,register_ip,last_login_date,last_login_ip) VALUES (?,?,?,?,?,?)',
+    await pool.query(
+        'INSERT INTO users(username,email,password,avatar,register_date,register_ip,last_login_date,last_login_ip) VALUES (?,?,?,?,?,?,?,?)',
         [
             username,
             email,
@@ -78,7 +86,7 @@ export const register = async (req,res)=>{
             register_ip
         ]
     )
-    res.status(200).json(user)
+    res.status(200).json({msg:'注册成功'})
 }
 
 // 更换密码
@@ -141,7 +149,7 @@ export const retrievePassword = async (req,res)=>{
     const email = req.body.email
     const sender_ip = req.ip
     const action_type = 'RETRIEVE_PASSWORD'
-    let isError = false
+    let error = ''
     let isSended = false
     const [[user]] = await pool.query(
         'SELECT * FROM users WHERE email = ?',
@@ -164,11 +172,10 @@ export const retrievePassword = async (req,res)=>{
         subject:'找回密码',
         to:email,
         text:`验证码为:${code}`
-    }).catch(error=>{
-        isError = true
-        res.status(400).json(error)
+    }).catch(err=>{
+        error = err
     })
-    if(isError) return
+    if(error) return res.status(400).json(error)
     if(!isSended) {
         await pool.query(
             'INSERT INTO verify_code(receiver_email,code,send_date,sender_ip,action_type) VALUES (?,?,?,?,?)',

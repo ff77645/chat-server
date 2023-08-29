@@ -4,7 +4,7 @@ const router = new Router()
 
 
 router.post('/create-room',ctx.createRoom)
-router.post('/join-room',ctx.joinRoom)
+router.get('/room',ctx.joinRoom)
 
 
 export default router

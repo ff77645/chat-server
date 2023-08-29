@@ -3,7 +3,7 @@ post http://127.0.0.1:3000/login
 Content-Type: application/json
 
 {
-    "username":"Tom2",
+    "email":"Tom2@qq.com",
     "password":"654321"
 }
 
@@ -13,8 +13,8 @@ post http://127.0.0.1:3000/login/register
 Content-Type: application/json
 
 {
-    "username":"test",
-    "password":"123456"
+    "email":"Tom@qq.com",
+    "password":"654321"
 }
 
 ### /login/change-psd
@@ -22,7 +22,7 @@ post http://127.0.0.1:3000/login/change-psd
 Content-Type: application/json
 
 {
-    "username":"Tom2",
+    "email":"Tom2@qq.com",
     "password":"123456",
     "newpassword":"654321"
 }

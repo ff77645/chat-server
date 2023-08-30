@@ -86,7 +86,12 @@ export const register = async (req,res)=>{
             register_ip
         ]
     )
-    res.status(200).json({msg:'注册成功'})
+    const [[user]] = await pool.query(
+        'SELECT * FROM users WHERE email = ? LIMIT 1',
+        [email]
+    )
+    console.log({user});
+    res.status(200).json({msg:'注册成功',user})
 }
 
 // 更换密码

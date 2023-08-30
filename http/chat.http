@@ -8,5 +8,5 @@ Content-Type: application/json
 
 
 ### 加入房间
-get http://127.0.0.1:3000/chat/room?roomNum=14
+get http://127.0.0.1:3000/chat/room?roomNum=140
 Content-Type: application/json

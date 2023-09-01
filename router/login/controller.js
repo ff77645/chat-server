@@ -135,7 +135,7 @@ export const changePasswordForEmail = async (req,res)=>{
         [email,action_type]
     )
 
-    if(!resp || resp.code !== code || +resp.send_date > Date.now() - 300000){
+    if(!resp || resp.code !== code || +resp.send_date < Date.now() - 300000){
         const msg = !resp || resp.code !== code ? '验证码错误' : '验证码超时'
         return res.status(400).json({msg})
     }
@@ -149,7 +149,7 @@ export const changePasswordForEmail = async (req,res)=>{
 }
 
 // 找回密码
-export const retrievePassword = async (req,res)=>{
+export const sendVerifyCodeForEmail = async (req,res)=>{
     let code = Math.floor(Math.random() * 900000) + 10000
     const email = req.body.email
     const sender_ip = req.ip
@@ -194,7 +194,7 @@ export const retrievePassword = async (req,res)=>{
         )
     }
     res.status(200).json({
-        msg:'发送成功'
+        msg:'发送成功',
     })
 }
 

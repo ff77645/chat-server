@@ -14,5 +14,6 @@ CREATE TABLE IF NOT EXISTS users (
     register_ip CHAR(255) COMMENT '注册时 IP 地址',
     last_login_date DATETIME COMMENT '最后登录时间',
     last_login_ip CHAR(255) COMMENT '最后登录时 IP 地址',
+    source CHAR(20) COMMENT '来源'
     PRIMARY KEY (id)
 );

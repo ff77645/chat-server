@@ -1,0 +1,8 @@
+### /login
+post http://127.0.0.1:3000/v1/auth/login
+Content-Type: application/json
+
+{
+    "email":"Tom2@qq.com",
+    "password":"654321"
+}

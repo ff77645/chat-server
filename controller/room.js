@@ -1,13 +1,14 @@
 import catchAsync from '../utils/catchAsync.js'
 import redis from '../redis/index.js'
+import {v4 as uuid} from 'uuid'
 // import pool from '../mysql/index.js'
 
 // 创建房间
 export const createRoom = catchAsync(async (req,res)=>{
     const {
         roomName,
-        roomId,
     } = req.body
+    const roomId = uuid()
     const roomNum = (await redis.hLen('rooms')) + 1
     const room = {
         roomName,

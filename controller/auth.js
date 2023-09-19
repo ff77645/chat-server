@@ -20,7 +20,7 @@ export const login = catchAsync(async (req,res)=>{
         // TODO 生成用户头像
         const avatar = ''
         await pool.query(
-            'INSERT INTO users(username,email,password,avatar,register_date,register_ip,last_login_date,last_login_ip) VALUES (?,?,?,?,?,?,?,?)',
+            'INSERT INTO users(nickname,email,password,avatar,register_date,register_ip,last_login_date,last_login_ip) VALUES (?,?,?,?,?,?,?,?)',
             [
                 username,
                 email,

@@ -2,7 +2,7 @@ import pool from '../mysql/index.js'
 
 const SEND_TEXT = 'send_text'
 const JOIN_ROOM = 'join_room'
-const COMMON_ROOM = '000001'
+const COMMON_ROOM = '001'
 
 
 export default io=>{

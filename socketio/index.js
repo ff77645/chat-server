@@ -8,12 +8,12 @@ const io = new Server({
     }
 })
 
-// io.on('connection',socket =>{
-//     console.log('connection',socket.id);
-//     socket.on('disconnect',i=>{
-//         console.log('disconnect',i.id);
-//     })
-// })
+io.on('connection',socket =>{
+    console.log('connection',socket.id);
+    socket.on('disconnect',i=>{
+        console.log('disconnect',i.id);
+    })
+})
 
 export default httpServer =>{
     chatServer(io)

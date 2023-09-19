@@ -9,14 +9,17 @@ export const createRoom = catchAsync(async (req,res)=>{
         roomId,
     } = req.body
     const roomNum = (await redis.hLen('rooms')) + 1
-    const value = {
+    const room = {
         roomName,
         roomId,
         roomNum,
     }
 
-    redis.hSet('rooms',roomId,JSON.stringify(value))
-    res.status(200).json(value)
+    redis.hSet('rooms',roomId,JSON.stringify(room))
+    res.json({
+        success:true,
+        room
+    })
 })
 
 // 加入房间
@@ -25,7 +28,10 @@ export const joinRoom = catchAsync(async (req,res)=>{
         roomNum,
     } = req.body
     const room = await redis.hGet('rooms',roomNum+'')
-    res.status(200).json(room)
+    res.json({
+        success:true,
+        room
+    })
 })
 
 // 离开房间

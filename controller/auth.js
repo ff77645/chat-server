@@ -16,7 +16,7 @@ export const login = catchAsync(async (req,res)=>{
         const register_date = dayjs().format('YYYY-MM-DD HH:mm:ss')
         const register_ip = req.ip
         // TODO 生成随机用户名
-        const username = ''
+        const username = '无名狗蛋'
         // TODO 生成用户头像
         const avatar = ''
         await pool.query(
@@ -38,7 +38,10 @@ export const login = catchAsync(async (req,res)=>{
         )
         resp = user
     }else{
-        if(resp.password !== password)  return res.status(403).json({msg:'密码错误'})
+        if(resp.password !== password)  return res.json({
+            success:false,
+            msg:'密码错误'
+        })
         const date = dayjs().format('YYYY-MM-DD HH:mm:ss')
         const ip = req.ip
         await pool.query(
@@ -49,7 +52,8 @@ export const login = catchAsync(async (req,res)=>{
     const token = await sign({id:resp.id},JWT_SECRET,{
         expiresIn:TOKEN_EXPIRE
     })
-    res.status(200).json({
+    res.json({
+        success:true,
         token,
         user:resp
     })
@@ -65,7 +69,10 @@ export const updateUserData = catchAsync(async (req,res)=>{
         'SELECT * FROM users WHERE id = ?',
         [id]
     )
-    if(!user) return res.status(406).end() 
+    if(!user) return res.json({
+        success:false,
+        msg:'用户不存在'
+    })
     let {
         username=user.username,
         nickname=user.nickname,
@@ -78,7 +85,10 @@ export const updateUserData = catchAsync(async (req,res)=>{
         'UPDATE users SET username = ?,nickname = ?,gender = ?,mobile = ?,mobile_confirmed = ?,avatar = ? WHERE id = ?',
         [username,nickname,gender,mobile,mobile_confirmed,avatar,id]
     )
-    res.status(200).json({msg:'修改成功'})
+    res.json({
+        success:true,
+        msg:'修改成功'
+    })
 })
 
 

@@ -23,4 +23,4 @@ app.use('/v1',router)
 // app.use(router)
 
 
-export default app
+export default httpServer

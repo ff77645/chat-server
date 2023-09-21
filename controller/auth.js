@@ -79,8 +79,18 @@ export const updateUserData = catchAsync(async (req,res)=>{
         gender=user.gender,
         mobile=user.mobile,
         mobile_confirmed=user.mobile_confirmed,
-        avatar=user.avatar,
+        avatar,
     } = req.body
+    if(avatar){
+        const create_date = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        const img_type = 'user_head'
+        await pool.query(
+            'INSERT INTO user_image(uid,img_src,img_type,create_date) VALUES (?,?,?,?)',
+            [id,avatar,img_type,create_date]
+        )
+    }else{
+        avatar=user.avatar
+    }
     await pool.query(
         'UPDATE users SET username = ?,nickname = ?,gender = ?,mobile = ?,mobile_confirmed = ?,avatar = ? WHERE id = ?',
         [username,nickname,gender,mobile,mobile_confirmed,avatar,id]

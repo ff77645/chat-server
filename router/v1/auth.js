@@ -10,7 +10,8 @@ const router = new Router()
 // router.post('/logout',controller.logout)
 // router.post('/refresh-token',controller.refreshToken)
 router.post('/login',controller.login)
-router.post('/update-user-data',controller.updateUserData)
+router.post('/update-user',controller.updateUserData)
+router.get('/user-info',controller.getUserInfo)
 
 
 

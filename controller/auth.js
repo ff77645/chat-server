@@ -1,7 +1,7 @@
 import catchAsync from '../utils/catchAsync.js'
 import pool from '../mysql/index.js'
 import dayjs from 'dayjs'
-import {sign} from '../utils/jwt.js'
+import {sign,verify,decode} from '../utils/jwt.js'
 import {JWT_SECRET,TOKEN_EXPIRE} from '../config/index.js'
 
 
@@ -102,3 +102,30 @@ export const updateUserData = catchAsync(async (req,res)=>{
 })
 
 
+// 获取用户数据
+export const getUserInfo = catchAsync(async (req,res)=>{
+    let {
+        token
+    } = req.query
+    console.log({token});
+    try{
+        const data = await verify(token,JWT_SECRET)
+        const [[user]] = await pool.query(
+            'SELECT * FROM users WHERE id =?',
+            [data.id]
+        )
+        const _token = await sign({id:data.id},JWT_SECRET,{
+            expiresIn:TOKEN_EXPIRE
+        })
+        return res.json({
+            success:true,
+            data:user,
+            token:_token
+        })
+    }catch(e){
+        return res.json({
+            success:false,
+            msg:'token无效'
+        })
+    }
+})
